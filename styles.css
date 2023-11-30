@@ -1,0 +1,13 @@
+body {
+    text-align: center;
+}
+
+.details {
+    width: 60%;
+}
+
+textarea {
+    resize: none;
+    width: 60%;
+    height: 100px;
+}

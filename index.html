@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Online Resume Builder</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="jquery-3.7.1.min.js"></script>
+        <script>
+            $(document).ready(function () {  
+                var form = $('.form'),  
+                cache_width = form.width(),  
+                a4 = [595.28, 841.89]; // for a4 size paper width and height  
+            
+                $('#create_pdf').on('click', function () {  
+                    $('body').scrollTop(0);  
+                    createPDF();  
+                });  
+                
+                function createPDF() {  
+                    getCanvas().then(function (canvas) {  
+                        var  
+                         img = canvas.toDataURL("image/png"),  
+                         doc = new jsPDF({  
+                             unit: 'px',  
+                             format: 'a4'  
+                         });  
+                        doc.addImage(img, 'JPEG', 20, 20);  
+                        doc.save('resume.pdf');  
+                        form.width(cache_width);  
+                    });  
+                }  
+                  
+                function getCanvas() {  
+                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');  
+                    return html2canvas(form, {  
+                        imageTimeout: 2000,  
+                        removeContainer: true  
+                    });  
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Resume Builder</h1>
+        <form class="form">
+        <table>
+        <p>Details</p>
+        <p class="subHeading">Name</p>
+        <input type="text" placeholder="Enter your full name" class="details" required>
+        <p class="subHeading">E-mail</p>
+        <input type="email" placeholder="Enter your email" class="details" required>
+        <p class="subHeading">Contact Number</p>
+        <input type="text" placeholder="Enter number" class="details" required>
+        <p class="subHeading">Work experience</p>
+        <textarea placeholder="Enter work history" required></textarea>
+        <p class="subHeading">Skills</p>
+        <textarea placeholder="Enter the skills you have" required></textarea>
+        <input type="button" id="create_pdf" value="Generate PDF">
+        </form>
+    </body>
+</html>
